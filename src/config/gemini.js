@@ -4,11 +4,20 @@ import {
     HarmBlockThreshold,
 } from "@google/generative-ai";
 
-const apiKey = "AIzaSyAG3uJvd4hULU1LIJjNjnqgrjVbi1td0VQ";
+// Read API key and model from environment variables (Vite requires VITE_ prefix)
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const modelName = import.meta.env.VITE_GEMINI_MODEL || "gemini-2.5-flash";
+
+if (!apiKey) {
+    throw new Error(
+        "Missing VITE_GEMINI_API_KEY. Create .env.local with your key and keep it out of git."
+    );
+}
+
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+    model: modelName,
 });
 
 const generationConfig = {
